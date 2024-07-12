@@ -10,7 +10,8 @@ function Home() {
       axios.get("http://localhost:3001/posts").then((response) =>{
         setListOfPost(response.data);
       });
-    },[])
+    },[]);
+    
   return (
     <div>
         {listOfPost.map( (value, key) =>{
