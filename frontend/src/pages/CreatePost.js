@@ -2,6 +2,8 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from "axios"; 
+import {useNavigate} from "react-router-dom";
+
 
 function CreatePost() {
 
@@ -22,9 +24,12 @@ function CreatePost() {
   // Just for see the data
   const onSubmit = (data) => {
     axios.post("http://localhost:3001/posts", data).then(() =>{
-        console.log("works");
+      //redirect to the home page
+        navigate("/");
     });
   };
+
+  let navigate = useNavigate();
 
   return (
     <div className="createPostPage">
