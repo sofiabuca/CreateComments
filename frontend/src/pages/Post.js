@@ -4,6 +4,8 @@ import axios from "axios";
 
 function Post() {
     const [postObject, setPostObject] =useState({}); //Create at empty object
+    const [comments, setComments] = useState([]); //Passing a list of comments
+
     let {id} = useParams();
 
 
@@ -11,7 +13,12 @@ function Post() {
         axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) =>{
             setPostObject(response.data);
         });
-    });
+
+        //Call the comments
+        axios.get(`http://localhost:3001/comments/${id}`).then((response) =>{
+            setComments(response.data);
+        });
+    }, [id]);
 
 
   return (
@@ -25,7 +32,16 @@ function Post() {
             </div>
         </div>
         <div className="rightSide">
-            Comment section
+            <div className="addCommentContainer">
+                <input type='text' placeholder="Comment.." autoComplete="off" />
+                <button>Add Comment</button>
+            </div>
+            <div className="listOfComments"></div>
+            {comments.map((comment, key) => {
+                return <div key={key} className="comment">{comment.commentBody}</div>
+            })}
+
+            
         </div>
      
     </div>
