@@ -11,7 +11,7 @@ router.get('/', async (req,res) =>{
     res.json(lisOfPost);
 });
 
-//Making a post requets
+//Create a post 
 router.post('/', async (req,res) =>{
     const post = req.body; //Grab the post data for the body
     await Posts.create(post); //Call sequealize for insert the data into the table
@@ -23,6 +23,6 @@ router.get('/byId/:id', async (req, res) =>{
     const id = req.params.id;
     const post = await Posts.findByPk(id);
     res.json(post);
-})
+});
 
 module.exports = router;

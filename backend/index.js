@@ -9,13 +9,16 @@ app.use(express.json());
 app.use(cors());
 
 
-
 //Import the table
 const db = require('./models');
 
 //Routers
 const postRouter = require('./routes/Posts');
 app.use("/posts", postRouter);
+
+//Comments router
+const commentsRouter = require('./routes/Comments');
+app.use("/comments", commentsRouter);
 
 //Call the port
 db.sequelize.sync().then( () => {
@@ -25,5 +28,3 @@ db.sequelize.sync().then( () => {
 });
 
 
-
-//Create our table
