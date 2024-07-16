@@ -1,5 +1,4 @@
 //Create a table
-
 //Export a function that gives access to sequelize and DataTypes
 module.exports = (sequelize, DataTypes) =>{
     //Variable that represent the module
