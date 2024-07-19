@@ -1,28 +1,35 @@
 const express = require('express');
 const router = express.Router();
+const {Users} = require('../models');
+const bcrypt = require("bcrypt");
 
-
-//Call the table
-const {User} = require('../models');
-
-//Making GET All request
-router.get('/', async (req,res) =>{
-    const lisOfPost = await Posts.findAll(); //Find all the info in the table
-    res.json(lisOfPost);
-});
-
-//Create a post 
+//Create a post request for registration
 router.post('/', async (req,res) =>{
-    const post = req.body; //Grab the post data for the body
-    await Posts.create(post); //Call sequealize for insert the data into the table
-    res.json(post); //return a respond
+   const {userName, password} = req.body; //We are sending an object that has both of them
+   bcrypt.hash(password, 10).then((hash) =>{
+        Users.create({
+            userName: userName,
+            password: hash,
+        })
+        res.json("Success");
+   }); //passing the original password and convert it
 });
 
-//Call the post using ID
-router.get('/byId/:id', async (req, res) =>{
-    const id = req.params.id;
-    const post = await Posts.findByPk(id);
-    res.json(post);
+//Login route
+router.post('/login', async (req,res) =>{
+    const {userName, password} = req.body;
+
+    //Check if the username exist in the table
+    const user = await Users.findOne({where: {userName: userName}});
+    
+    if(!user) res.json({error: "User doesn't EXIST"});
+
+    //compare the passwords
+    bcrypt.compare(password, user.password).then((match) => {
+        if(!match) res.json({error: "Wrong username and password combination"});
+        res.json("You logged in");
+    });
 });
+
 
 module.exports = router;
